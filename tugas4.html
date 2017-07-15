@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="custom_main.css">
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBlXfKjljpDqVknbJskiPTS6VthkkwtQc">
+          //key=AIzaSyCBlXfKjljpDqVknbJskiPTS6VthkkwtQc adalah API KEY yang dibuat
+    </script>
+
+	
+	
+    <div class="container" style="margin-top:100px;">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Sistem Informasi Geografi</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Beranda</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Novilia Purwita Putri | L200140120</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<style type="text/css">
+  #bagian_peta{
+    width:680px;
+    height:450px;
+  }
+  #top tr td{
+    padding:0px;
+  }
+  </style>
+  <script type="text/javascript">
+        var map;
+        var polyline;
+        var lineCoordinates = [
+            [-7.5419361,110.830935],[-7.5423875,110.8354576],[-7.5356083,110.8373565],[-7.5351233,110.8364845]
+			
+        ];
+        function addAnimatedPolyline () {
+            var pointCount = lineCoordinates.length;
+            var linePath = [];
+            for (var i=0; i < pointCount; i++) {
+                var tempLatLng = new google.maps.LatLng(lineCoordinates[i][0], lineCoordinates[i][1]);
+                linePath.push(tempLatLng);
+            }
+            var arrowSymbol = {
+                strokeColor: '#000',
+                scale: 3,
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+            };
+            var lineOptions = {
+                path: linePath,
+                icons: [{
+                    icon: arrowSymbol
+                }],
+                strokeWeight: 3,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8
+            }
+            polyline = new google.maps.Polyline(lineOptions);
+            polyline.setMap(map);
+            animateArrow();
+        }
+        function animateArrow() {
+            var counter = 0;
+            var accessVar = window.setInterval(function() {
+                counter = (counter + 1) % 200;
+                var arrows = polyline.get('icons');
+                arrows[0].offset = (counter / 2) + '%';
+                polyline.set('icons', arrows);
+            }, 50);
+        }
+        function initMap() {
+            google.maps.visualRefresh = true;
+            var mapOptions = {
+                center: new google.maps.LatLng(-7.5351233,110.8364845),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var mapElement = document.getElementById('bagian_peta');
+            map = new google.maps.Map(mapElement, mapOptions);
+            addAnimatedPolyline();
+        }
+        
+  function change_map(type){
+      if(type == "roadmap"){
+        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+      }else if(type == "satellite"){
+        map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+      }else if(type == "hybrid"){
+        map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+      }else if(type == "terrain"){
+        map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+      }
+  }
+  google.maps.event.addDomListener(window,"load", initMap);
+      
+    </script>
+
+</head>
+
+<body>
+
+<br>
+          
+<center>
+<div id="bagian_peta"></div>
+<br>
+<table id="top">
+            <tr>
+              <td>
+                <button type="button" class="btn btn-secondary" id="roadmap" onclick="change_map(this.id)">RoadMap</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-warning" id="satellite" onclick="change_map(this.id)">Satellite</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger" id="hybrid" onclick="change_map(this.id)">Hybrid</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-success" id="terrain" onclick="change_map(this.id)">Terrain</button>
+              </td>
+            </tr>
+</table>
+</center>
+</body>
+<br>
+<hr>
+<footer>
+  <p>
+    <b>Copyright &copy; 2017</b> <a href="#"> Novilia</a> | All rights reserved.
+  </p>
+</footer>
+</div></div>
+</html>
